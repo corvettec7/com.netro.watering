@@ -1,0 +1,664 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.netro.watering",
+  "version": "0.1.0",
+  "compatibility": ">=12.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Netro Smart Watering",
+    "fr": "Arrosage Netro"
+  },
+  "description": {
+    "en": "Control Netro smart watering and monitor device status.",
+    "fr": "Pilotez l'arrosage intelligent Netro et surveillez l'état des appareils."
+  },
+  "category": [
+    "appliances"
+  ],
+  "tags": {
+    "en": [
+      "netro",
+      "watering",
+      "irrigation",
+      "sprinkler",
+      "garden",
+      "whisperer",
+      "sprite"
+    ],
+    "fr": [
+      "netro",
+      "arrosage",
+      "irrigation",
+      "arroseur",
+      "jardin",
+      "whisperer",
+      "sprite"
+    ]
+  },
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png"
+  },
+  "author": {
+    "name": "Patrick Tavaris"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Patrick Tavaris"
+      }
+    ]
+  },
+  "brandColor": "#5FB25A",
+  "source": "https://github.com/corvettec7/com.netro.watering",
+  "homepage": "https://www.netrohome.com",
+  "support": "https://github.com/corvettec7/com.netro.watering/issues",
+  "flow": {
+    "triggers": [
+      {
+        "id": "controller_went_offline",
+        "title": {
+          "en": "Controller went offline",
+          "fr": "Le contrôleur est passé hors ligne"
+        },
+        "tokens": [
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status",
+              "fr": "Statut"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      },
+      {
+        "id": "controller_came_online",
+        "title": {
+          "en": "Controller came back online",
+          "fr": "Le contrôleur est revenu en ligne"
+        },
+        "tokens": [
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status",
+              "fr": "Statut"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      },
+      {
+        "id": "zone_watering_started",
+        "title": {
+          "en": "A zone started watering",
+          "fr": "Une zone a commencé à arroser"
+        },
+        "tokens": [
+          {
+            "name": "zone",
+            "type": "number",
+            "title": {
+              "en": "Zone",
+              "fr": "Zone"
+            }
+          },
+          {
+            "name": "zone_name",
+            "type": "string",
+            "title": {
+              "en": "Zone name",
+              "fr": "Nom de zone"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      },
+      {
+        "id": "zone_watering_stopped",
+        "title": {
+          "en": "A zone stopped watering",
+          "fr": "Une zone a fini d'arroser"
+        },
+        "tokens": [
+          {
+            "name": "zone",
+            "type": "number",
+            "title": {
+              "en": "Zone",
+              "fr": "Zone"
+            }
+          },
+          {
+            "name": "zone_name",
+            "type": "string",
+            "title": {
+              "en": "Zone name",
+              "fr": "Nom de zone"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_online",
+        "title": {
+          "en": "Controller !{{is|isn't}} online",
+          "fr": "Le contrôleur !{{est|n'est pas}} en ligne"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "start_watering",
+        "title": {
+          "en": "Start watering",
+          "fr": "Démarrer l'arrosage"
+        },
+        "titleFormatted": {
+          "en": "Water for [[duration]] min (zones [[zones]], delay [[delay]] min)",
+          "fr": "Arroser [[duration]] min (zones [[zones]], délai [[delay]] min)"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          },
+          {
+            "type": "number",
+            "name": "duration",
+            "title": {
+              "en": "Duration (min)",
+              "fr": "Durée (min)"
+            },
+            "min": 1,
+            "max": 120,
+            "step": 1,
+            "placeholder": {
+              "en": "minutes",
+              "fr": "minutes"
+            }
+          },
+          {
+            "type": "text",
+            "name": "zones",
+            "required": false,
+            "title": {
+              "en": "Zones (e.g. 1,2)",
+              "fr": "Zones (ex : 1,2)"
+            },
+            "placeholder": {
+              "en": "all zones if empty",
+              "fr": "toutes si vide"
+            }
+          },
+          {
+            "type": "number",
+            "name": "delay",
+            "required": false,
+            "title": {
+              "en": "Delay (min)",
+              "fr": "Délai (min)"
+            },
+            "min": 0,
+            "max": 1440
+          }
+        ]
+      },
+      {
+        "id": "stop_watering",
+        "title": {
+          "en": "Stop watering",
+          "fr": "Arrêter l'arrosage"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          }
+        ]
+      },
+      {
+        "id": "no_water",
+        "title": {
+          "en": "Skip watering for N days",
+          "fr": "Ne pas arroser pendant N jours"
+        },
+        "titleFormatted": {
+          "en": "Skip watering for [[days]] days",
+          "fr": "Ne pas arroser pendant [[days]] jours"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          },
+          {
+            "type": "number",
+            "name": "days",
+            "title": {
+              "en": "Days",
+              "fr": "Jours"
+            },
+            "min": 1,
+            "max": 100
+          }
+        ]
+      },
+      {
+        "id": "set_moisture",
+        "title": {
+          "en": "Set zone moisture",
+          "fr": "Forcer l'humidité d'une zone"
+        },
+        "titleFormatted": {
+          "en": "Set moisture to [[moisture]]% (zones [[zones]])",
+          "fr": "Forcer l'humidité à [[moisture]]% (zones [[zones]])"
+        },
+        "hint": {
+          "en": "Overrides the smart estimate. Set 100% after rain to make Netro skip a cycle.",
+          "fr": "Surcharge l'estimation smart. Mettre 100 % après une pluie pour que Netro saute un cycle."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=controller"
+          },
+          {
+            "type": "number",
+            "name": "moisture",
+            "title": {
+              "en": "Moisture (%)",
+              "fr": "Humidité (%)"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1
+          },
+          {
+            "type": "text",
+            "name": "zones",
+            "required": false,
+            "title": {
+              "en": "Zones (e.g. 1,2)",
+              "fr": "Zones (ex : 1,2)"
+            },
+            "placeholder": {
+              "en": "all zones if empty",
+              "fr": "toutes si vide"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Netro Controller",
+        "fr": "Contrôleur Netro"
+      },
+      "class": "other",
+      "capabilities": [
+        "alarm_generic",
+        "onoff",
+        "netro_status",
+        "zone_watering",
+        "watering_zones"
+      ],
+      "capabilitiesOptions": {
+        "onoff": {
+          "title": {
+            "en": "Enabled",
+            "fr": "Activé"
+          },
+          "setOnDim": false
+        },
+        "alarm_generic": {
+          "title": {
+            "en": "Offline",
+            "fr": "Hors ligne"
+          }
+        },
+        "zone_watering": {
+          "title": {
+            "en": "Watering (any zone)",
+            "fr": "Arrosage (une zone)"
+          }
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/controller/assets/images/small.png",
+        "large": "/drivers/controller/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "enter_key"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Polling interval",
+            "fr": "Intervalle de rafraîchissement"
+          },
+          "value": 5,
+          "min": 2,
+          "max": 60,
+          "units": {
+            "en": "min",
+            "fr": "min"
+          },
+          "hint": {
+            "en": "Netro limits to 2000 calls/day. 5 min = 288/day.",
+            "fr": "Netro limite à 2000 requêtes/jour. 5 min = 288/jour."
+          }
+        },
+        {
+          "id": "watering_poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Polling interval while watering",
+            "fr": "Intervalle pendant l'arrosage"
+          },
+          "value": 1,
+          "min": 1,
+          "max": 10,
+          "units": {
+            "en": "min",
+            "fr": "min"
+          },
+          "hint": {
+            "en": "Faster refresh during a watering cycle for accurate start/end on the graph. 1 min recommended.",
+            "fr": "Rafraîchissement plus rapide pendant un arrosage pour un début/fin précis sur le graphe. 1 min conseillé."
+          }
+        },
+        {
+          "id": "debug",
+          "type": "checkbox",
+          "label": {
+            "en": "Verbose logging",
+            "fr": "Journalisation détaillée"
+          },
+          "value": false,
+          "hint": {
+            "en": "Log every API call to the app log. Turn on to help debugging, off in normal use.",
+            "fr": "Journalise chaque appel API. À activer pour déboguer, à laisser désactivé en usage normal."
+          }
+        }
+      ],
+      "id": "controller"
+    },
+    {
+      "name": {
+        "en": "Netro Sensor (Whisperer)",
+        "fr": "Capteur Netro (Whisperer)"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_humidity",
+        "measure_temperature",
+        "measure_luminance",
+        "measure_battery",
+        "alarm_battery"
+      ],
+      "capabilitiesOptions": {
+        "measure_humidity": {
+          "title": {
+            "en": "Soil moisture",
+            "fr": "Humidité du sol"
+          }
+        }
+      },
+      "energy": {
+        "batteries": [
+          "OTHER"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/sensor/assets/images/small.png",
+        "large": "/drivers/sensor/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "enter_key"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Polling interval",
+            "fr": "Intervalle de rafraîchissement"
+          },
+          "value": 30,
+          "min": 10,
+          "max": 240,
+          "units": {
+            "en": "min",
+            "fr": "min"
+          },
+          "hint": {
+            "en": "The sensor reports about once per hour. 30 min is plenty. Netro limit: 2000 calls/day.",
+            "fr": "Le capteur émet environ 1×/heure. 30 min suffit. Limite Netro : 2000 appels/jour."
+          }
+        },
+        {
+          "id": "battery_threshold",
+          "type": "number",
+          "label": {
+            "en": "Low-battery alarm below",
+            "fr": "Alarme batterie faible en dessous de"
+          },
+          "value": 15,
+          "min": 5,
+          "max": 50,
+          "units": {
+            "en": "%",
+            "fr": "%"
+          },
+          "hint": {
+            "en": "Trigger the battery alarm when the sensor drops below this level.",
+            "fr": "Déclenche l'alarme batterie quand le capteur passe sous ce niveau."
+          }
+        },
+        {
+          "id": "debug",
+          "type": "checkbox",
+          "label": {
+            "en": "Verbose logging",
+            "fr": "Journalisation détaillée"
+          },
+          "value": false,
+          "hint": {
+            "en": "Log every API call to the app log.",
+            "fr": "Journalise chaque appel API."
+          }
+        }
+      ],
+      "id": "sensor"
+    }
+  ],
+  "capabilities": {
+    "netro_status": {
+      "type": "enum",
+      "title": {
+        "en": "Status",
+        "fr": "Statut"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "values": [
+        {
+          "id": "ONLINE",
+          "title": {
+            "en": "Online",
+            "fr": "En ligne"
+          }
+        },
+        {
+          "id": "WATERING",
+          "title": {
+            "en": "Watering",
+            "fr": "Arrosage en cours"
+          }
+        },
+        {
+          "id": "STANDBY",
+          "title": {
+            "en": "Standby",
+            "fr": "En veille"
+          }
+        },
+        {
+          "id": "SETUP",
+          "title": {
+            "en": "Setup",
+            "fr": "Configuration"
+          }
+        },
+        {
+          "id": "SLEEPING",
+          "title": {
+            "en": "Sleeping",
+            "fr": "En sommeil"
+          }
+        },
+        {
+          "id": "OFFLINE",
+          "title": {
+            "en": "Offline",
+            "fr": "Hors ligne"
+          }
+        },
+        {
+          "id": "POWEROFF",
+          "title": {
+            "en": "Power off",
+            "fr": "Éteint"
+          }
+        }
+      ]
+    },
+    "zone_watering": {
+      "type": "boolean",
+      "title": {
+        "en": "Watering",
+        "fr": "Arrosage"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Started watering",
+        "fr": "Début d'arrosage"
+      },
+      "insightsTitleFalse": {
+        "en": "Stopped watering",
+        "fr": "Fin d'arrosage"
+      },
+      "icon": "/assets/drop.svg"
+    },
+    "watering_zones": {
+      "type": "number",
+      "title": {
+        "en": "Watering zones",
+        "fr": "Zones en arrosage"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "units": {
+        "en": "zones",
+        "fr": "zones"
+      },
+      "decimals": 0,
+      "min": 0,
+      "icon": "/assets/drop.svg"
+    }
+  }
+}
