@@ -2,5 +2,9 @@
   "0.1.0": {
     "en": "First version. Controllers (Sprite/Spark): start/stop watering, skip N days, force zone moisture, enable/standby, online/offline alarm with trigger cards, readable status, a controller-level watering indicator and per-zone watering indicators with clean start/end edges on the Insights graph (adaptive polling during a cycle) plus 'zone started/stopped watering' Flow triggers, and a numeric \"watering zones\" indicator for a reliable Insights graph. Whisperer sensor: soil moisture, temperature, luminance, battery and a low-battery alarm. Talks to the Netro Public API v2; rate-limit aware. Fully documented (EN/FR).",
     "fr": "Première version. Contrôleurs (Sprite/Spark) : démarrer/arrêter l'arrosage, ne pas arroser N jours, forcer l'humidité d'une zone, activer/veille, alarme en ligne/hors ligne avec cartes de déclenchement, statut lisible, un indicateur d'arrosage au niveau contrôleur et des indicateurs d'arrosage par zone avec débuts/fins nets sur le graphe Insights (polling adaptatif pendant un cycle) ainsi que les cartes Flow « zone a commencé/fini d'arroser », et un indicateur numérique « zones en arrosage » pour un graphe Insights fiable. Capteur Whisperer : humidité du sol, température, luminosité, batterie et alarme de batterie faible. Dialogue avec l'API publique Netro v2 ; respect du quota. Entièrement documenté (FR/EN)."
+  },
+  "0.2.0": {
+    "en": "Adds a dashboard widget: 'Zones overview' shows every zone of your Netro controllers at a glance, with the zones that are currently watering highlighted. Requires Homey 12.3.0+ (widget support).",
+    "fr": "Ajoute un widget de tableau de bord : « Vue d'ensemble des zones » affiche toutes les zones de vos contrôleurs Netro d'un coup d'œil, celles qui arrosent en surbrillance. Nécessite Homey 12.3.0+ (support des widgets)."
   }
 }
