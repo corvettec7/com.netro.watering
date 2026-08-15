@@ -103,9 +103,23 @@ class NetroControllerDevice extends Homey.Device {
     return { en: name, fr: name };
   }
 
+  // Read-only snapshot consumed by the dashboard widget API (no Netro call).
+  // Instantané en lecture seule pour l'API du widget (aucun appel Netro).
+  getZonesSnapshot() {
+    return (this._zonesInfo || []).map((z) => ({
+      ith: z.ith,
+      name: z.name,
+      watering: this.getCapabilityValue(`zone_watering.zone${z.ith}`) === true,
+    }));
+  }
+
   async _syncZones(device, status) {
     const zones = Array.isArray(device.zones) ? device.zones : [];
     if (!zones.length) return;
+
+    // Keep a lightweight zones snapshot (index + name) for the dashboard widget.
+    // Instantané léger des zones (index + nom) pour le widget de tableau de bord.
+    this._zonesInfo = zones.map((z) => ({ ith: z.ith, name: z.name || `Zone ${z.ith}` }));
 
     // One-time cleanup: remove the deprecated per-zone humidity tiles that
     // earlier versions created (Netro rarely returns per-zone estimates, so

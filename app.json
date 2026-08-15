@@ -1,8 +1,8 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.netro.watering",
-  "version": "0.1.0",
-  "compatibility": ">=12.0.0",
+  "version": "0.2.0",
+  "compatibility": ">=12.3.0",
   "sdk": 3,
   "platforms": [
     "local"
@@ -659,6 +659,23 @@
       "decimals": 0,
       "min": 0,
       "icon": "/assets/drop.svg"
+    }
+  },
+  "widgets": {
+    "zones_overview": {
+      "id": "zones_overview",
+      "name": {
+        "en": "Zones overview",
+        "fr": "Vue d'ensemble des zones"
+      },
+      "settings": [],
+      "api": {
+        "getState": {
+          "method": "GET",
+          "path": "/state"
+        }
+      },
+      "height": 200
     }
   }
 }

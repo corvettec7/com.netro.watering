@@ -119,6 +119,20 @@ intelligent.
   sol, température, luminosité, batterie, et une alarme de batterie faible — en
   lecture seule.
 
+### Dashboard widget / Widget de tableau de bord
+
+**EN —** The app adds a **Zones overview** widget for Homey Dashboards: it
+shows every zone of your Netro controllers at a glance, highlighting the ones
+currently watering. It reads local state only (no Netro API call). Requires
+Homey 12.3.0+.
+
+**FR —** L'app ajoute un widget **Vue d'ensemble des zones** pour les Tableaux
+de bord Homey : il montre toutes les zones de vos contrôleurs Netro d'un coup
+d'œil, celles qui arrosent en surbrillance. Il lit uniquement l'état local
+(aucun appel Netro). Nécessite Homey 12.3.0+.
+
+---
+
 ### Visualising watering cycles / Visualiser les cycles d'arrosage
 
 **EN —** Each zone's "watering" state is a boolean logged to **Insights**, so its
