@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--homey-text-color, #111);
+      background: transparent;
+    }
+    .ctrl { margin: 0 0 14px; }
+    .ctrl:last-child { margin-bottom: 0; }
+    .ctrl-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin: 0 2px 8px; font-size: 13px; font-weight: 600;
+    }
+    .ctrl-status { font-size: 11px; font-weight: 500; opacity: .6; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .zone {
+      border-radius: 12px; padding: 10px 8px; min-height: 48px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      background: var(--homey-su-100, rgba(120,120,128,0.14));
+      transition: background .2s, color .2s;
+    }
+    .zone.on {
+      background: #5FB25A; color: #fff;
+      box-shadow: 0 0 0 2px rgba(95,178,90,.35);
+    }
+    .zone .drop { font-size: 15px; line-height: 1; margin-bottom: 4px; opacity: .55; }
+    .zone.on .drop { opacity: 1; }
+    .zone .name { font-size: 11px; font-weight: 500; word-break: break-word; }
+    .zone .sub { font-size: 9px; font-weight: 500; margin-top: 3px; line-height: 1.15; opacity: .9; }
+    .empty, .offline { font-size: 12px; opacity: .6; padding: 6px 2px; }
+    .offline { color: #e07a4f; }
+  </style>
+</head>
+<body>
+  <div id="root"><div class="empty">…</div></div>
+
+  <script type="text/javascript">
+    function render(data) {
+      const root = document.getElementById('root');
+      const t = (data && data.t) || {};
+      const ctrls = (data && data.controllers) || [];
+      if (!ctrls.length) {
+        root.innerHTML = '<div class="empty">' + escapeHtml(t.none || '') + '</div>';
+        return sizeToContent();
+      }
+      let html = '';
+      for (const c of ctrls) {
+        html += '<div class="ctrl">';
+        html += '<div class="ctrl-head"><span>' + escapeHtml(c.name) + '</span>'
+              + '<span class="ctrl-status">' + escapeHtml(c.statusLabel || '') + '</span></div>';
+        if (!c.available) {
+          html += '<div class="offline">' + escapeHtml(t.unavailable || '') + '</div>';
+        } else if (!c.zones.length) {
+          html += '<div class="empty">' + escapeHtml(t.detecting || '') + '</div>';
+        } else {
+          html += '<div class="grid">';
+          for (const z of c.zones) {
+            html += '<div class="zone' + (z.watering ? ' on' : '') + '">'
+                  + '<div class="drop">' + (z.watering ? '💧' : '○') + '</div>'
+                  + '<div class="name">' + escapeHtml(z.name) + '</div>'
+                  + (z.watering ? '<div class="sub">' + escapeHtml(t.watering || '') + '</div>' : '')
+                  + '</div>';
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      root.innerHTML = html;
+      sizeToContent();
+    }
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function sizeToContent() {
+      try {
+        if (window.Homey && typeof Homey.setHeight === 'function') {
+          Homey.setHeight(document.body.scrollHeight);
+        }
+      } catch (e) {}
+    }
+
+    let t_error = 'Read error.';
+    async function refresh() {
+      try {
+        const data = await Homey.api('GET', '/state');
+        if (data && data.t && data.t.error) t_error = data.t.error;
+        render(data);
+      } catch (e) {
+        document.getElementById('root').innerHTML =
+          '<div class="offline">' + t_error + '</div>';
+        sizeToContent();
+      }
+    }
+
+    function onHomeyReady(Homey) {
+      window.Homey = Homey;
+      refresh();
+      setInterval(refresh, 5000); // lecture locale, sans impact quota Netro
+      Homey.ready();
+    }
+  </script>
+</body>
+</html>
