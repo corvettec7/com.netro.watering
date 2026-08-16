@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--homey-text-color, #111);
+      background: transparent;
+    }
+    .ctrl { margin: 0 0 14px; }
+    .ctrl:last-child { margin-bottom: 0; }
+    .ctrl-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 0 2px 8px; gap: 8px;
+    }
+    .ctrl-name { font-size: 13px; font-weight: 600; }
+    .ctrl-status { font-size: 11px; font-weight: 500; opacity: .55; margin-left: auto; }
+    .stop-btn {
+      border: none; border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 600;
+      background: rgba(224,122,79,.16); color: #d1603a; cursor: pointer;
+    }
+    .stop-btn:active { transform: scale(.96); }
+    .zone {
+      display: flex; align-items: center; gap: 8px;
+      border-radius: 10px; padding: 8px 10px; margin-bottom: 6px;
+      background: var(--homey-su-100, rgba(120,120,128,0.12));
+    }
+    .zone.on { background: rgba(95,178,90,.18); box-shadow: inset 0 0 0 1.5px rgba(95,178,90,.5); }
+    .zone .zname { font-size: 12px; font-weight: 500; flex: 1; word-break: break-word; }
+    .zone .zsub { font-size: 9px; color: #4c9c46; font-weight: 600; }
+    .btns { display: flex; gap: 5px; }
+    .btn {
+      border: none; border-radius: 8px; min-width: 30px; padding: 6px 8px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      background: #5FB25A; color: #fff;
+    }
+    .btn:active { transform: scale(.94); }
+    .btn:disabled { opacity: .5; cursor: default; }
+    .empty, .offline { font-size: 12px; opacity: .6; padding: 6px 2px; }
+    .offline { color: #e07a4f; }
+    #toast {
+      position: sticky; bottom: 0; margin-top: 6px; text-align: center;
+      font-size: 11px; padding: 5px; border-radius: 8px; opacity: 0;
+      transition: opacity .2s; background: rgba(95,178,90,.15);
+    }
+    #toast.err { background: rgba(224,122,79,.18); color: #d1603a; }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div id="root"><div class="empty">…</div></div>
+  <div id="toast"></div>
+
+  <script type="text/javascript">
+    var T = {}, DUR = [5, 10, 15];
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function sizeToContent() {
+      try { if (window.Homey && Homey.setHeight) Homey.setHeight(document.body.scrollHeight); } catch (e) {}
+    }
+    function toast(msg, isErr) {
+      var el = document.getElementById('toast');
+      el.textContent = msg; el.className = 'show' + (isErr ? ' err' : '');
+      clearTimeout(el._t); el._t = setTimeout(function(){ el.className=''; }, 2500);
+    }
+
+    function render(data) {
+      T = (data && data.t) || {};
+      DUR = (data && data.durations) || [5,10,15];
+      var ctrls = (data && data.controllers) || [];
+      var root = document.getElementById('root');
+      if (!ctrls.length) { root.innerHTML = '<div class="empty">'+esc(T.none)+'</div>'; return sizeToContent(); }
+      var html = '';
+      for (var i=0;i<ctrls.length;i++) {
+        var c = ctrls[i];
+        html += '<div class="ctrl">';
+        html += '<div class="ctrl-head"><span class="ctrl-name">'+esc(c.name)+'</span>'
+              + '<span class="ctrl-status">'+esc(c.statusLabel||'')+'</span>'
+              + '<button class="stop-btn" data-stop="'+esc(c.id)+'">'+esc(T.stop)+'</button></div>';
+        if (!c.available) { html += '<div class="offline">'+esc(T.unavailable)+'</div>'; }
+        else if (!c.zones.length) { html += '<div class="empty">'+esc(T.detecting)+'</div>'; }
+        else {
+          for (var j=0;j<c.zones.length;j++) {
+            var z = c.zones[j];
+            html += '<div class="zone'+(z.watering?' on':'')+'">';
+            html += '<span class="zname">'+esc(z.name)+(z.watering?' <span class="zsub">'+esc(T.watering)+'</span>':'')+'</span>';
+            html += '<span class="btns">';
+            for (var k=0;k<DUR.length;k++) {
+              html += '<button class="btn" data-dev="'+esc(c.id)+'" data-zone="'+z.ith+'" data-dur="'+DUR[k]+'">'+DUR[k]+'</button>';
+            }
+            html += '</span></div>';
+          }
+        }
+        html += '</div>';
+      }
+      root.innerHTML = html;
+      bind();
+      sizeToContent();
+    }
+
+    function bind() {
+      var btns = document.querySelectorAll('.btn');
+      for (var i=0;i<btns.length;i++) btns[i].addEventListener('click', onWater);
+      var stops = document.querySelectorAll('.stop-btn');
+      for (var s=0;s<stops.length;s++) stops[s].addEventListener('click', onStop);
+    }
+
+    async function onWater(e) {
+      var b = e.currentTarget;
+      var dev = b.getAttribute('data-dev');
+      var zone = parseInt(b.getAttribute('data-zone'),10);
+      var dur = parseInt(b.getAttribute('data-dur'),10);
+      b.disabled = true;
+      try {
+        var r = await Homey.api('POST','/water',{ deviceId: dev, zone: zone, duration: dur });
+        if (r && r.ok) toast('💧 '+dur+' '+(T.min||'min'));
+        else toast((T.error||'Error')+': '+((r&&r.error)||''), true);
+      } catch (err) { toast((T.error||'Error'), true); }
+      setTimeout(refresh, 800);
+    }
+
+    async function onStop(e) {
+      var b = e.currentTarget;
+      var dev = b.getAttribute('data-stop');
+      b.disabled = true;
+      try {
+        var r = await Homey.api('POST','/stop',{ deviceId: dev });
+        if (r && r.ok) toast('■ '+(T.stop||'Stop'));
+        else toast((T.error||'Error')+': '+((r&&r.error)||''), true);
+      } catch (err) { toast((T.error||'Error'), true); }
+      setTimeout(refresh, 800);
+    }
+
+    async function refresh() {
+      try { render(await Homey.api('GET','/state')); }
+      catch (e) { document.getElementById('root').innerHTML='<div class="offline">'+(T.error||'Error')+'</div>'; sizeToContent(); }
+    }
+
+    function onHomeyReady(Homey) {
+      window.Homey = Homey;
+      refresh();
+      setInterval(refresh, 5000);
+      Homey.ready();
+    }
+  </script>
+</body>
+</html>

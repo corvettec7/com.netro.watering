@@ -9,5 +9,9 @@
   },
   "0.2.1": {
     "en": "Corrige le chargement du widget et du pairing"
+  },
+  "0.3.0": {
+    "en": "Adds a second dashboard widget: 'Watering control' — quick 5/10/15 min buttons to water each zone directly from the dashboard, plus a Stop button per controller.",
+    "fr": "Ajoute un second widget de tableau de bord : « Commande d'arrosage » — boutons rapides 5/10/15 min pour arroser chaque zone directement depuis le dashboard, plus un bouton Arrêter par contrôleur."
   }
 }

@@ -121,15 +121,17 @@ intelligent.
 
 ### Dashboard widget / Widget de tableau de bord
 
-**EN —** The app adds a **Zones overview** widget for Homey Dashboards: it
+**EN —** The app adds two widgets for Homey Dashboards. **Zones overview**:
 shows every zone of your Netro controllers at a glance, highlighting the ones
 currently watering. It reads local state only (no Netro API call). Requires
 Homey 12.3.0+.
 
-**FR —** L'app ajoute un widget **Vue d'ensemble des zones** pour les Tableaux
+**FR —** L'app ajoute deux widgets pour les Tableaux de bord Homey. **Vue d'ensemble des zones** : les Tableaux
 de bord Homey : il montre toutes les zones de vos contrôleurs Netro d'un coup
 d'œil, celles qui arrosent en surbrillance. Il lit uniquement l'état local
 (aucun appel Netro). Nécessite Homey 12.3.0+.
+
+**Watering control / Commande d'arrosage** — quick 5/10/15 min buttons to water each zone directly from the dashboard, plus a Stop button per controller. / boutons rapides 5/10/15 min pour arroser chaque zone depuis le dashboard, plus un bouton Arrêter par contrôleur.
 
 ---
 
