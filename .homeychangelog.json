@@ -6,5 +6,8 @@
   "0.2.0": {
     "en": "Adds a dashboard widget: 'Zones overview' shows every zone of your Netro controllers at a glance, with the zones that are currently watering highlighted. Requires Homey 12.3.0+ (widget support).",
     "fr": "Ajoute un widget de tableau de bord : « Vue d'ensemble des zones » affiche toutes les zones de vos contrôleurs Netro d'un coup d'œil, celles qui arrosent en surbrillance. Nécessite Homey 12.3.0+ (support des widgets)."
+  },
+  "0.2.1": {
+    "en": "Corrige le chargement du widget et du pairing"
   }
 }
