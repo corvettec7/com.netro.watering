@@ -28,5 +28,9 @@
   },
   "0.6.1": {
     "en": "Insights: single \"watering zone\" number + name tile"
+  },
+  "0.6.2": {
+    "en": "Stability: the app now migrates capabilities automatically on update (no more re-pairing) and the device init is hardened so a migration can never break a device. The per-zone Insights number is seeded on init so its graph is available immediately. Widgets are resilient to a single faulty controller.",
+    "fr": "Stabilité : l'app migre désormais les capacités automatiquement à la mise à jour (fini le ré-appairage) et l'initialisation de l'appareil est durcie pour qu'une migration ne casse plus jamais un appareil. Le nombre Insights par zone est amorcé à l'init pour que son graphe soit disponible tout de suite. Les widgets résistent à un contrôleur défaillant."
   }
 }

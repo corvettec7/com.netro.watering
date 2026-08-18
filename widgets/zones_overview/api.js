@@ -31,15 +31,19 @@ module.exports = {
     }
 
     const controllers = devices.map((d) => {
-      const status = d.getCapabilityValue('netro_status') || null;
-      return {
-        id: d.getData().id,
-        name: d.getName(),
-        available: d.getAvailable(),
-        statusLabel: status ? (statusMap[status] || status) : '',
-        zones: (typeof d.getZonesSnapshot === 'function') ? d.getZonesSnapshot() : [],
-      };
-    });
+      try {
+        const status = d.getCapabilityValue('netro_status') || null;
+        return {
+          id: d.getData().id,
+          name: d.getName(),
+          available: d.getAvailable(),
+          statusLabel: status ? (statusMap[status] || status) : '',
+          zones: (typeof d.getZonesSnapshot === 'function') ? d.getZonesSnapshot() : [],
+        };
+      } catch (e) {
+        return null; // one broken device must not break the whole widget
+      }
+    }).filter(Boolean);
 
     return { t, controllers };
   },

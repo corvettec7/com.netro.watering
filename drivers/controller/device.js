@@ -21,15 +21,59 @@ class NetroControllerDevice extends Homey.Device {
 
     this.log(`Device init: "${this.getName()}" (poll=${this.getSetting('poll_interval')}min, debug=${!!this.getSetting('debug')})`);
 
-    // onoff = enable (ONLINE) / standby (STANDBY) the controller
-    this.registerCapabilityListener('onoff', async (value) => {
-      this.log(`Flow/UI -> setStatus(${value})`);
-      await this.api.setStatus(value);
-      this.homey.setTimeout(() => this.poll().catch(this.error), 5000);
-    });
-
     this._zoneWatering = {}; // last known per-zone watering state / dernier état arrosage par zone
+
+    // Reconcile capabilities so app updates never require re-pairing and a
+    // partial migration can't leave the device broken.
+    // Réconcilie les capacités : une mise à jour n'exige jamais de ré-appairage,
+    // et une migration partielle ne casse plus l'appareil.
+    await this._migrateCapabilities().catch((e) => this.error('migrate:', e.message));
+
+    // onoff = enable/standby — GUARDED so a missing capability during a
+    // migration can never crash init (which broke the whole device before).
+    // onoff = activer/veille — PROTÉGÉ : une capacité absente pendant une
+    // migration ne peut plus faire planter l'init (ce qui cassait tout avant).
+    if (this.hasCapability('onoff')) {
+      this.registerCapabilityListener('onoff', async (value) => {
+        this.log(`Flow/UI -> setStatus(${value})`);
+        await this.api.setStatus(value);
+        this.homey.setTimeout(() => this.poll().catch(this.error), 5000);
+      });
+    }
+
+    // Seed the Insights number right away so its graph source exists from the
+    // first minute (0 = no zone watering), independent of polling.
+    // Amorce le nombre Insights tout de suite pour que sa source de graphe
+    // existe dès la 1re minute (0 = aucune zone), sans dépendre du polling.
+    if (this.hasCapability('watering_zone_active') && this.getCapabilityValue('watering_zone_active') === null) {
+      await this.setCapabilityValue('watering_zone_active', 0).catch(() => {});
+    }
+
     await this.poll().catch(this.error);
+  }
+
+  // Add missing capabilities and drop obsolete ones, in a safe order, so
+  // existing devices self-migrate on app update (no re-pairing needed).
+  // Ajoute les capacités manquantes et retire les obsolètes, dans un ordre sûr,
+  // pour que les appareils existants se migrent seuls (sans ré-appairage).
+  async _migrateCapabilities() {
+    const obsolete = ['watering_zones', 'watering_z1', 'watering_z2', 'watering_z3', 'watering_z4', 'watering_z5', 'watering_z6'];
+    const wanted = [
+      'alarm_generic', 'onoff', 'netro_status', 'zone_watering',
+      'zone_watering.zone1', 'zone_watering.zone2', 'zone_watering.zone3',
+      'zone_watering.zone4', 'zone_watering.zone5', 'zone_watering.zone6',
+      'watering_zone_active', 'watering_zone_name',
+    ];
+    for (const cap of obsolete) {
+      if (this.hasCapability(cap)) {
+        await this.removeCapability(cap).catch((e) => this.error(`removeCapability ${cap}:`, e.message));
+      }
+    }
+    for (const cap of wanted) {
+      if (!this.hasCapability(cap)) {
+        await this.addCapability(cap).catch((e) => this.error(`addCapability ${cap}:`, e.message));
+      }
+    }
   }
 
   // Self-scheduling poll loop: tighter cadence while watering so the start and

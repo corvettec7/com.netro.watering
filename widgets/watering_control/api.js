@@ -36,16 +36,20 @@ module.exports = {
     catch (e) { return { t, durations: [5, 10, 15], controllers: [] }; }
 
     const controllers = devices.map((d) => {
-      const status = d.getCapabilityValue('netro_status') || null;
-      return {
-        id: d.getData().id,
-        name: d.getName(),
-        available: d.getAvailable(),
-        statusLabel: status ? (statusMap[status] || status) : '',
-        watering: status === 'WATERING',
-        zones: (typeof d.getZonesSnapshot === 'function') ? d.getZonesSnapshot() : [],
-      };
-    });
+      try {
+        const status = d.getCapabilityValue('netro_status') || null;
+        return {
+          id: d.getData().id,
+          name: d.getName(),
+          available: d.getAvailable(),
+          statusLabel: status ? (statusMap[status] || status) : '',
+          watering: status === 'WATERING',
+          zones: (typeof d.getZonesSnapshot === 'function') ? d.getZonesSnapshot() : [],
+        };
+      } catch (e) {
+        return null; // one broken device must not break the whole widget
+      }
+    }).filter(Boolean);
     return { t, durations: [5, 10, 15], controllers };
   },
 
