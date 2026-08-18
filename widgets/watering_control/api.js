@@ -70,7 +70,7 @@ module.exports = {
     const device = findDevice(homey, body && body.deviceId);
     if (!device) return { ok: false, error: 'device_not_found' };
     try {
-      await device.api.stopWater();
+      await device.stopWatering();
       return { ok: true };
     } catch (e) {
       return { ok: false, error: e.message };

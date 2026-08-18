@@ -269,8 +269,29 @@ class NetroControllerDevice extends Homey.Device {
   async startWatering({ zones, duration, delay }) {
     this.log(`startWatering zones=${JSON.stringify(zones) || 'all'} duration=${duration} delay=${delay || 0}`);
     const res = await this.api.water({ zones, duration, delay });
-    this.homey.setTimeout(() => this.poll().catch(this.error), 5000);
+    this._repollBurst(); // refresh tiles/widgets within seconds, not minutes
     return res;
+  }
+
+  // Stop all watering on this controller, then refresh quickly.
+  // Arrête tout arrosage sur ce contrôleur, puis rafraîchit vite.
+  async stopWatering() {
+    this.log('stopWatering (all zones)');
+    const res = await this.api.stopWater();
+    this._repollBurst();
+    return res;
+  }
+
+  // After a manual start/stop, Netro's cloud takes a moment to reflect the new
+  // state. Fire a few quick polls so tiles and widgets catch up in seconds
+  // instead of waiting for the next scheduled poll.
+  // Après un start/stop manuel, le cloud Netro met un instant à refléter le
+  // nouvel état. On enchaîne quelques polls rapprochés pour que tuiles et
+  // widgets se mettent à jour en quelques secondes, sans attendre le poll planifié.
+  _repollBurst() {
+    for (const ms of [3000, 8000, 15000]) {
+      this.homey.setTimeout(() => this.poll().catch(this.error), ms);
+    }
   }
 
   async onSettings({ changedKeys }) {

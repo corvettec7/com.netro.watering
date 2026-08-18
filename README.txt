@@ -15,5 +15,9 @@ Watering activity shows up in Insights as a single graphable "watering zone" num
 
 L'activité d'arrosage apparaît dans Insights sous la forme d'un unique nombre « zone en arrosage » traçable (quelle zone tourne), avec une tuile texte compagnon affichant le nom de la zone active.
 
+Starting or stopping watering from the dashboard widget updates within a few seconds.
+
+Démarrer ou arrêter un arrosage depuis le widget de tableau de bord se met à jour en quelques secondes.
+
 Unofficial community app — not affiliated with Netro, Inc.
 Application communautaire non officielle, sans lien avec Netro, Inc.

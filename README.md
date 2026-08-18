@@ -135,6 +135,9 @@ d'œil, celles qui arrosent en surbrillance. Il lit uniquement l'état local
 
 **Watering control / Commande d'arrosage** — quick 5/10/15 min buttons to water each zone directly from the dashboard, plus a Stop button per controller. / boutons rapides 5/10/15 min pour arroser chaque zone depuis le dashboard, plus un bouton Arrêter par contrôleur.
 
+**EN —** When you start or stop watering, the widget refreshes within a few seconds: a short burst of polls right after the command catches Netro's new state quickly, rather than waiting for the next scheduled poll.
+**FR —** Au démarrage ou à l'arrêt d'un arrosage, le widget se met à jour en quelques secondes : une courte rafale de sondages juste après la commande capte rapidement le nouvel état Netro, sans attendre le prochain sondage planifié.
+
 ---
 
 ### Visualising watering cycles / Visualiser les cycles d'arrosage
