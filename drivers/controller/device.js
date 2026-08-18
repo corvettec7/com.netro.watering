@@ -135,19 +135,23 @@ class NetroControllerDevice extends Homey.Device {
       this._humidityCleaned = true;
     }
 
-    // Create one "watering" sub-capability per zone, once.
-    // Crée une fois une sous-capacité « arrosage » par zone.
+    // Zone watering sub-capabilities are declared STATICALLY in the manifest
+    // (zone_watering.zone1..6) so each gets its own reliable Insights log.
+    // Here we only label each with its real Netro name and seed its edge state.
+    // Les sous-capacités d'arrosage par zone sont déclarées STATIQUEMENT dans le
+    // manifeste (zone_watering.zone1..6) pour un journal Insights fiable par
+    // zone. Ici on leur donne le vrai nom Netro et on amorce leur état.
     const today = new Date().toISOString().slice(0, 10);
+    this._zoneTitled = this._zoneTitled || {};
     for (const z of zones) {
       const watCap = `zone_watering.zone${z.ith}`;
-      if (!this.hasCapability(watCap)) {
-        await this.addCapability(watCap).catch((e) => this.error(`addCapability ${watCap}:`, e.message));
-        if (typeof this.setCapabilityOptions === 'function') {
-          await this.setCapabilityOptions(watCap, { title: this._zoneTitle(z) }).catch(() => {});
-        }
+      if (!this.hasCapability(watCap)) continue; // zone beyond the declared count
+      // Set the real zone name as the capability title, once per name change.
+      // Met le vrai nom de zone comme titre, une fois par changement de nom.
+      if (this._zoneTitled[z.ith] !== z.name && typeof this.setCapabilityOptions === 'function') {
+        await this.setCapabilityOptions(watCap, { title: this._zoneTitle(z) }).catch(() => {});
+        this._zoneTitled[z.ith] = z.name;
       }
-      // Seed edge state from the persisted value (survives app restarts).
-      // Amorce l'état depuis la valeur persistée (survit aux redémarrages).
       if (this._zoneWatering[z.ith] === undefined) {
         this._zoneWatering[z.ith] = this.getCapabilityValue(watCap) === true;
       }
@@ -179,6 +183,7 @@ class NetroControllerDevice extends Homey.Device {
       const now = executing.has(z.ith);
       const prev = this._zoneWatering[z.ith];
       if (prev === now) continue; // no edge -> nothing to log or fire
+      if (!this.hasCapability(`zone_watering.zone${z.ith}`)) continue;
 
       await this.setCapabilityValue(`zone_watering.zone${z.ith}`, now).catch(() => {});
       this._zoneWatering[z.ith] = now;

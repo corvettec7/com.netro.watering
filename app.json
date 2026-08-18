@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.netro.watering",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "compatibility": ">=12.3.0",
   "sdk": 3,
   "platforms": [
@@ -348,6 +348,12 @@
         "onoff",
         "netro_status",
         "zone_watering",
+        "zone_watering.zone1",
+        "zone_watering.zone2",
+        "zone_watering.zone3",
+        "zone_watering.zone4",
+        "zone_watering.zone5",
+        "zone_watering.zone6",
         "watering_zones"
       ],
       "capabilitiesOptions": {
@@ -368,6 +374,42 @@
           "title": {
             "en": "Watering (any zone)",
             "fr": "Arrosage (une zone)"
+          }
+        },
+        "zone_watering.zone1": {
+          "title": {
+            "en": "Zone 1",
+            "fr": "Zone 1"
+          }
+        },
+        "zone_watering.zone2": {
+          "title": {
+            "en": "Zone 2",
+            "fr": "Zone 2"
+          }
+        },
+        "zone_watering.zone3": {
+          "title": {
+            "en": "Zone 3",
+            "fr": "Zone 3"
+          }
+        },
+        "zone_watering.zone4": {
+          "title": {
+            "en": "Zone 4",
+            "fr": "Zone 4"
+          }
+        },
+        "zone_watering.zone5": {
+          "title": {
+            "en": "Zone 5",
+            "fr": "Zone 5"
+          }
+        },
+        "zone_watering.zone6": {
+          "title": {
+            "en": "Zone 6",
+            "fr": "Zone 6"
           }
         }
       },
