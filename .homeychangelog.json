@@ -36,5 +36,8 @@
   "0.6.3": {
     "en": "Snappier dashboard widgets: starting or stopping watering now updates within a few seconds (a short burst of polls catches Netro's new state right away) instead of waiting for the next scheduled poll.",
     "fr": "Widgets de tableau de bord plus réactifs : démarrer ou arrêter un arrosage se met désormais à jour en quelques secondes (une courte rafale de sondages capte tout de suite le nouvel état Netro) au lieu d'attendre le prochain sondage planifié."
+  },
+  "0.6.4": {
+    "en": "Widgets plus reactifs : le demarrage et l'arret d'un arrosage se mettent a jour en quelques secondes."
   }
 }
