@@ -17,5 +17,9 @@
   "0.4.0": {
     "en": "Per-zone watering history in Insights: each zone now has its own on/off curve you can view and stack in the Web app / Dashboards.",
     "fr": "Historique d'arrosage par zone dans Insights : chaque zone a désormais sa propre courbe on/off, consultable et superposable dans l'app Web / les Dashboards."
+  },
+  "0.5.0": {
+    "en": "Per-zone watering graphs in Insights: each zone now has its own 0/1 curve you can view and stack in the Web app / Dashboards (kept the yes/no tiles for at-a-glance status).",
+    "fr": "Graphes d'arrosage par zone dans Insights : chaque zone a sa propre courbe 0/1, consultable et superposable dans l'app Web / les Dashboards (les tuiles oui/non sont conservées pour l'état d'un coup d'œil)."
   }
 }

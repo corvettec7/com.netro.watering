@@ -145,12 +145,22 @@ class NetroControllerDevice extends Homey.Device {
     this._zoneTitled = this._zoneTitled || {};
     for (const z of zones) {
       const watCap = `zone_watering.zone${z.ith}`;
+      const numCap = `watering_z${z.ith}`; // hidden 0/1 number mirror, for Insights graphs
       if (!this.hasCapability(watCap)) continue; // zone beyond the declared count
-      // Set the real zone name as the capability title, once per name change.
-      // Met le vrai nom de zone comme titre, une fois par changement de nom.
+      // Label both the boolean tile and the hidden number with the real zone
+      // name — the number is what shows up as a graphable Insights source.
+      // Titre = vrai nom de zone (booléen ET nombre masqué), une fois.
       if (this._zoneTitled[z.ith] !== z.name && typeof this.setCapabilityOptions === 'function') {
         await this.setCapabilityOptions(watCap, { title: this._zoneTitle(z) }).catch(() => {});
+        if (this.hasCapability(numCap)) {
+          await this.setCapabilityOptions(numCap, { title: this._zoneTitle(z) }).catch(() => {});
+        }
         this._zoneTitled[z.ith] = z.name;
+      }
+      // Seed the hidden number (0/1) so its Insights log exists from the start.
+      // Amorce le nombre masqué (0/1) pour créer son journal Insights d'emblée.
+      if (this.hasCapability(numCap) && this.getCapabilityValue(numCap) === null) {
+        await this.setCapabilityValue(numCap, this.getCapabilityValue(watCap) === true ? 1 : 0).catch(() => {});
       }
       if (this._zoneWatering[z.ith] === undefined) {
         this._zoneWatering[z.ith] = this.getCapabilityValue(watCap) === true;
@@ -186,6 +196,9 @@ class NetroControllerDevice extends Homey.Device {
       if (!this.hasCapability(`zone_watering.zone${z.ith}`)) continue;
 
       await this.setCapabilityValue(`zone_watering.zone${z.ith}`, now).catch(() => {});
+      if (this.hasCapability(`watering_z${z.ith}`)) {
+        await this.setCapabilityValue(`watering_z${z.ith}`, now ? 1 : 0).catch(() => {});
+      }
       this._zoneWatering[z.ith] = now;
 
       const tokens = { zone: z.ith, zone_name: z.name || `Zone ${z.ith}` };
