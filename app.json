@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.netro.watering",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "compatibility": ">=12.3.0",
   "sdk": 3,
   "platforms": [
@@ -354,13 +354,8 @@
         "zone_watering.zone4",
         "zone_watering.zone5",
         "zone_watering.zone6",
-        "watering_zones",
-        "watering_z1",
-        "watering_z2",
-        "watering_z3",
-        "watering_z4",
-        "watering_z5",
-        "watering_z6"
+        "watering_zone_active",
+        "watering_zone_name"
       ],
       "capabilitiesOptions": {
         "onoff": {
@@ -380,43 +375,50 @@
           "title": {
             "en": "Watering (any zone)",
             "fr": "Arrosage (une zone)"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone1": {
           "title": {
             "en": "Zone 1",
             "fr": "Zone 1"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone2": {
           "title": {
             "en": "Zone 2",
             "fr": "Zone 2"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone3": {
           "title": {
             "en": "Zone 3",
             "fr": "Zone 3"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone4": {
           "title": {
             "en": "Zone 4",
             "fr": "Zone 4"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone5": {
           "title": {
             "en": "Zone 5",
             "fr": "Zone 5"
-          }
+          },
+          "uiComponent": null
         },
         "zone_watering.zone6": {
           "title": {
             "en": "Zone 6",
             "fr": "Zone 6"
-          }
+          },
+          "uiComponent": null
         }
       },
       "platforms": [
@@ -690,107 +692,29 @@
       },
       "icon": "/assets/drop.svg"
     },
-    "watering_zones": {
+    "watering_zone_active": {
       "type": "number",
       "title": {
-        "en": "Watering zones",
-        "fr": "Zones en arrosage"
+        "en": "Watering zone (number)",
+        "fr": "Zone en arrosage (n°)"
       },
       "getable": true,
       "setable": false,
-      "uiComponent": "sensor",
       "insights": true,
-      "units": {
-        "en": "zones",
-        "fr": "zones"
-      },
-      "decimals": 0,
       "min": 0,
+      "max": 12,
+      "decimals": 0,
       "icon": "/assets/drop.svg"
     },
-    "watering_z1": {
-      "type": "number",
+    "watering_zone_name": {
+      "type": "string",
       "title": {
-        "en": "Watering zone 1",
-        "fr": "Arrosage zone 1"
+        "en": "Watering",
+        "fr": "Arrosage en cours"
       },
       "getable": true,
       "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
-    },
-    "watering_z2": {
-      "type": "number",
-      "title": {
-        "en": "Watering zone 2",
-        "fr": "Arrosage zone 2"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
-    },
-    "watering_z3": {
-      "type": "number",
-      "title": {
-        "en": "Watering zone 3",
-        "fr": "Arrosage zone 3"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
-    },
-    "watering_z4": {
-      "type": "number",
-      "title": {
-        "en": "Watering zone 4",
-        "fr": "Arrosage zone 4"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
-    },
-    "watering_z5": {
-      "type": "number",
-      "title": {
-        "en": "Watering zone 5",
-        "fr": "Arrosage zone 5"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
-    },
-    "watering_z6": {
-      "type": "number",
-      "title": {
-        "en": "Watering zone 6",
-        "fr": "Arrosage zone 6"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "uiComponent": null,
-      "min": 0,
-      "max": 1,
-      "decimals": 0
+      "icon": "/assets/drop.svg"
     }
   },
   "widgets": {

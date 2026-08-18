@@ -135,35 +135,16 @@ class NetroControllerDevice extends Homey.Device {
       this._humidityCleaned = true;
     }
 
-    // Zone watering sub-capabilities are declared STATICALLY in the manifest
-    // (zone_watering.zone1..6) so each gets its own reliable Insights log.
-    // Here we only label each with its real Netro name and seed its edge state.
-    // Les sous-capacités d'arrosage par zone sont déclarées STATIQUEMENT dans le
-    // manifeste (zone_watering.zone1..6) pour un journal Insights fiable par
-    // zone. Ici on leur donne le vrai nom Netro et on amorce leur état.
+    // Per-zone booleans (zone_watering.zone1..6) are kept for the widgets but
+    // their tiles are hidden. Insights uses a single "active zone" number below.
+    // Here we just seed each zone's edge state.
+    // Les booléens par zone (tuiles masquées) restent pour les widgets ; le
+    // graphe Insights passe par un seul nombre « zone active » (plus bas).
     const today = new Date().toISOString().slice(0, 10);
-    this._zoneTitled = this._zoneTitled || {};
     for (const z of zones) {
-      const watCap = `zone_watering.zone${z.ith}`;
-      const numCap = `watering_z${z.ith}`; // hidden 0/1 number mirror, for Insights graphs
-      if (!this.hasCapability(watCap)) continue; // zone beyond the declared count
-      // Label both the boolean tile and the hidden number with the real zone
-      // name — the number is what shows up as a graphable Insights source.
-      // Titre = vrai nom de zone (booléen ET nombre masqué), une fois.
-      if (this._zoneTitled[z.ith] !== z.name && typeof this.setCapabilityOptions === 'function') {
-        await this.setCapabilityOptions(watCap, { title: this._zoneTitle(z) }).catch(() => {});
-        if (this.hasCapability(numCap)) {
-          await this.setCapabilityOptions(numCap, { title: this._zoneTitle(z) }).catch(() => {});
-        }
-        this._zoneTitled[z.ith] = z.name;
-      }
-      // Seed the hidden number (0/1) so its Insights log exists from the start.
-      // Amorce le nombre masqué (0/1) pour créer son journal Insights d'emblée.
-      if (this.hasCapability(numCap) && this.getCapabilityValue(numCap) === null) {
-        await this.setCapabilityValue(numCap, this.getCapabilityValue(watCap) === true ? 1 : 0).catch(() => {});
-      }
       if (this._zoneWatering[z.ith] === undefined) {
-        this._zoneWatering[z.ith] = this.getCapabilityValue(watCap) === true;
+        const c = `zone_watering.zone${z.ith}`;
+        this._zoneWatering[z.ith] = this.hasCapability(c) && this.getCapabilityValue(c) === true;
       }
     }
 
@@ -195,9 +176,8 @@ class NetroControllerDevice extends Homey.Device {
       if (prev === now) continue; // no edge -> nothing to log or fire
       if (!this.hasCapability(`zone_watering.zone${z.ith}`)) continue;
 
-      await this.setCapabilityValue(`zone_watering.zone${z.ith}`, now).catch(() => {});
-      if (this.hasCapability(`watering_z${z.ith}`)) {
-        await this.setCapabilityValue(`watering_z${z.ith}`, now ? 1 : 0).catch(() => {});
+      if (this.hasCapability(`zone_watering.zone${z.ith}`)) {
+        await this.setCapabilityValue(`zone_watering.zone${z.ith}`, now).catch(() => {});
       }
       this._zoneWatering[z.ith] = now;
 
@@ -211,15 +191,33 @@ class NetroControllerDevice extends Homey.Device {
       }
     }
 
-    // Numeric watering activity (0..N) — a BASE number capability logs reliably
-    // to Insights, unlike per-zone boolean sub-capabilities. Written on change.
-    // Activité d'arrosage numérique (0..N) — une capacité nombre de base se
-    // trace de façon fiable dans Insights, contrairement aux sous-capacités
-    // booléennes par zone. Écrite au changement.
-    const count = executing.size;
-    if (this.hasCapability('watering_zones') && this._wateringCount !== count) {
-      await this.setCapabilityValue('watering_zones', count).catch(() => {});
-      this._wateringCount = count;
+    // Single "active zone" signals: a NUMBER (which zone is watering, 0 = none)
+    // that graphs reliably in Insights, plus a readable TEXT tile with the zone
+    // name. Netro waters one zone at a time, so a single value is accurate.
+    // Signaux « zone active » : un NOMBRE (quelle zone arrose, 0 = aucune) qui
+    // se trace de façon fiable dans Insights, + une tuile TEXTE lisible avec le
+    // nom de la zone. Netro arrose une zone à la fois, un seul nombre suffit.
+    let activeIth = 0;
+    let activeName = '';
+    if (executing.size) {
+      const first = zones.find((z) => executing.has(z.ith));
+      if (first) { activeIth = first.ith; activeName = first.name || `Zone ${first.ith}`; }
+    }
+    if (this.hasCapability('watering_zone_active') && this._activeIth !== activeIth) {
+      await this.setCapabilityValue('watering_zone_active', activeIth).catch(() => {});
+      this._activeIth = activeIth;
+    }
+    if (this.hasCapability('watering_zone_name')) {
+      if (!this._idleLabel) {
+        let fr = false;
+        try { fr = this.homey.i18n.getLanguage() === 'fr'; } catch (e) {}
+        this._idleLabel = fr ? 'Aucune' : 'None';
+      }
+      const label = activeName || this._idleLabel;
+      if (this._activeName !== label) {
+        await this.setCapabilityValue('watering_zone_name', label).catch(() => {});
+        this._activeName = label;
+      }
     }
   }
 

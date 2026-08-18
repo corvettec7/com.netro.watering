@@ -21,5 +21,9 @@
   "0.5.0": {
     "en": "Per-zone watering graphs in Insights: each zone now has its own 0/1 curve you can view and stack in the Web app / Dashboards (kept the yes/no tiles for at-a-glance status).",
     "fr": "Graphes d'arrosage par zone dans Insights : chaque zone a sa propre courbe 0/1, consultable et superposable dans l'app Web / les Dashboards (les tuiles oui/non sont conservées pour l'état d'un coup d'œil)."
+  },
+  "0.6.0": {
+    "en": "Simpler, model-agnostic watering history: a single 'watering zone' number (which zone is running, 0-12) that graphs cleanly in Insights, plus a text tile with the active zone's name. Per-zone tiles are now tidied away (still used by the widgets).",
+    "fr": "Historique d'arrosage plus simple et valable pour tous les modèles : un unique nombre « Zone en arrosage » (quelle zone tourne, 0-12) qui se trace proprement dans Insights, plus une tuile texte avec le nom de la zone active. Les tuiles par zone sont désormais rangées (toujours utilisées par les widgets)."
   }
 }

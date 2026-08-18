@@ -109,11 +109,13 @@ intelligent.
 ### Capabilities / Capacités
 
 - **Controller / Contrôleur:** offline alarm (`alarm_generic`), readable status
-  (`netro_status`), enable/standby (`onoff`), a controller-level "watering now"
-  indicator and a **per-zone** watering indicator (created automatically from the
-  number of zones). / alarme hors ligne, statut lisible, activation/veille, un
-  indicateur « arrosage en cours » au niveau contrôleur et un indicateur
-  d'arrosage **par zone** (créés automatiquement selon le nombre de zones).
+  (`netro_status`), enable/standby (`onoff`), plus two watering indicators: a
+  **number** "watering zone" (which zone is running, 0 = none) that you can
+  graph in Insights, and a **text** "Watering" tile showing the active zone's
+  name. / alarme hors ligne, statut lisible, activation/veille, plus deux
+  indicateurs d'arrosage : un **nombre** « Zone en arrosage » (quelle zone tourne,
+  0 = aucune) que vous pouvez tracer dans Insights, et une tuile **texte**
+  « Arrosage en cours » affichant le nom de la zone active.
 - **Sensor (Whisperer) / Capteur:** soil moisture, temperature, luminance,
   battery, and a low-battery alarm (`alarm_battery`) — read-only. / humidité du
   sol, température, luminosité, batterie, et une alarme de batterie faible — en

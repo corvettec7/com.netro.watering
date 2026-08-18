@@ -11,5 +11,9 @@ appareils pour déclencher des alertes. Inclut deux widgets de tableau de bord :
 qui arrosent en surbrillance) et des boutons d'arrosage rapides (5/10/15 min par
 zone, plus Arrêter).
 
+Watering activity shows up in Insights as a single graphable "watering zone" number (which zone is running), with a companion text tile showing the active zone's name.
+
+L'activité d'arrosage apparaît dans Insights sous la forme d'un unique nombre « zone en arrosage » traçable (quelle zone tourne), avec une tuile texte compagnon affichant le nom de la zone active.
+
 Unofficial community app — not affiliated with Netro, Inc.
 Application communautaire non officielle, sans lien avec Netro, Inc.
