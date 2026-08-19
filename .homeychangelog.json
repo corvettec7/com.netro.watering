@@ -39,5 +39,9 @@
   },
   "0.6.4": {
     "en": "Widgets plus reactifs : le demarrage et l'arret d'un arrosage se mettent a jour en quelques secondes."
+  },
+  "1.0.0": {
+    "en": "First stable release. Control your Netro Sprite/Spark controllers (start/stop watering per zone, set moisture, do-not-water, enable/standby), read the Whisperer sensor, use two dashboard widgets (zones overview and quick watering control), and follow watering in Insights with a per-zone graph. Flow cards for automation included.",
+    "fr": "Première version stable. Pilotez vos contrôleurs Netro Sprite/Spark (démarrer/arrêter l'arrosage par zone, forcer l'humidité, ne pas arroser, activer/veille), lisez le capteur Whisperer, utilisez deux widgets de tableau de bord (vue d'ensemble des zones et commande rapide), et suivez l'arrosage dans Insights avec un graphe par zone. Cartes de Flow incluses pour l'automatisation."
   }
 }
