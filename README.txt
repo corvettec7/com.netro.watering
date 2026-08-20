@@ -1,23 +1,11 @@
-Netro Smart Watering — Homey App
+Control your Netro smart watering from Homey Pro.
 
-Control your Netro smart watering devices (Sprite / Spark controllers and the
-Whisperer sensor) from Homey Pro, and monitor whether they are online to raise
-alerts. Includes two dashboard widgets: an overview of all zones (watering ones
-highlighted), and quick watering buttons (5/10/15 min per zone, plus Stop).
+Add your Netro Sprite or Spark controller and your Whisperer sensor as Homey devices, then water each zone on demand, set moisture, schedule no-watering days, and switch the controller between active and standby — all from Homey.
 
-Piloter votre arrosage intelligent Netro (contrôleurs Sprite / Spark et capteur
-Whisperer) depuis Homey Pro, et surveiller l'état en ligne/hors ligne des
-appareils pour déclencher des alertes. Inclut deux widgets de tableau de bord : une vue d'ensemble des zones (celles
-qui arrosent en surbrillance) et des boutons d'arrosage rapides (5/10/15 min par
-zone, plus Arrêter).
+Two dashboard widgets keep watering at your fingertips: an overview of every zone, with the ones currently watering highlighted, and quick watering buttons of 5, 10 or 15 minutes per zone, plus Stop.
 
-Watering activity shows up in Insights as a single graphable "watering zone" number (which zone is running), with a companion text tile showing the active zone's name.
+Follow your watering in Insights: a per-zone graph shows which zone ran and when, so you can stack several zones on one page and see your whole garden at a glance.
 
-L'activité d'arrosage apparaît dans Insights sous la forme d'un unique nombre « zone en arrosage » traçable (quelle zone tourne), avec une tuile texte compagnon affichant le nom de la zone active.
+Flow cards let you automate everything — start or stop watering from any Homey trigger, such as a humidity reading, a rain-tank level, or a weather forecast.
 
-Starting or stopping watering from the dashboard widget updates within a few seconds.
-
-Démarrer ou arrêter un arrosage depuis le widget de tableau de bord se met à jour en quelques secondes.
-
-Unofficial community app — not affiliated with Netro, Inc.
-Application communautaire non officielle, sans lien avec Netro, Inc.
+This is a community app and is not affiliated with or endorsed by Netro. It uses Netro's public cloud API and requires a Netro account with a device API key.

@@ -230,3 +230,11 @@ le changelog `.homeychangelog.json`.
 
 **Public domain — The Unlicense.** Do whatever you want with this code.
 / **Domaine public.** Faites-en ce que vous voulez. See [LICENSE](./LICENSE).
+
+---
+
+## Trademarks & images / Marques et images
+
+**EN —** "Netro", the Netro logo, and the product images of the Netro Sprite/Spark controller and the Whisperer sensor are the property of Netro Inc. They are used here solely to identify the supported devices. This is an unofficial community app, not affiliated with or endorsed by Netro.
+
+**FR —** « Netro », le logo Netro et les images produit du contrôleur Netro Sprite/Spark et du capteur Whisperer sont la propriété de Netro Inc. Ils sont utilisés uniquement pour identifier les appareils pris en charge. Application communautaire non officielle, sans affiliation avec Netro ni approbation de sa part.

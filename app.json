@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.netro.watering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=12.3.0",
   "sdk": 3,
   "platforms": [
@@ -12,8 +12,8 @@
     "fr": "Arrosage Netro"
   },
   "description": {
-    "en": "Control Netro smart watering and monitor device status.",
-    "fr": "Pilotez l'arrosage intelligent Netro et surveillez l'état des appareils."
+    "en": "Smart watering for every corner of your garden.",
+    "fr": "L'arrosage intelligent pour chaque coin du jardin."
   },
   "category": [
     "appliances"
@@ -196,8 +196,8 @@
           "fr": "Démarrer l'arrosage"
         },
         "titleFormatted": {
-          "en": "Water for [[duration]] min (zones [[zones]], delay [[delay]] min)",
-          "fr": "Arroser [[duration]] min (zones [[zones]], délai [[delay]] min)"
+          "en": "Water for [[duration]] min on [[zones]] with [[delay]] min delay",
+          "fr": "Arroser [[duration]] min sur [[zones]] avec [[delay]] min de délai"
         },
         "args": [
           {
@@ -209,8 +209,8 @@
             "type": "number",
             "name": "duration",
             "title": {
-              "en": "Duration (min)",
-              "fr": "Durée (min)"
+              "en": "Duration",
+              "fr": "Durée"
             },
             "min": 1,
             "max": 120,
@@ -225,12 +225,12 @@
             "name": "zones",
             "required": false,
             "title": {
-              "en": "Zones (e.g. 1,2)",
-              "fr": "Zones (ex : 1,2)"
+              "en": "Zones",
+              "fr": "Zones"
             },
             "placeholder": {
-              "en": "all zones if empty",
-              "fr": "toutes si vide"
+              "en": "e.g. 1,2 — all if empty",
+              "fr": "ex : 1,2 — toutes si vide"
             }
           },
           {
@@ -238,8 +238,8 @@
             "name": "delay",
             "required": false,
             "title": {
-              "en": "Delay (min)",
-              "fr": "Délai (min)"
+              "en": "Delay",
+              "fr": "Délai"
             },
             "min": 0,
             "max": 1440
@@ -295,8 +295,8 @@
           "fr": "Forcer l'humidité d'une zone"
         },
         "titleFormatted": {
-          "en": "Set moisture to [[moisture]]% (zones [[zones]])",
-          "fr": "Forcer l'humidité à [[moisture]]% (zones [[zones]])"
+          "en": "Set moisture to [[moisture]]% on [[zones]]",
+          "fr": "Forcer l'humidité à [[moisture]]% sur [[zones]]"
         },
         "hint": {
           "en": "Overrides the smart estimate. Set 100% after rain to make Netro skip a cycle.",
@@ -312,8 +312,8 @@
             "type": "number",
             "name": "moisture",
             "title": {
-              "en": "Moisture (%)",
-              "fr": "Humidité (%)"
+              "en": "Moisture",
+              "fr": "Humidité"
             },
             "min": 0,
             "max": 100,
@@ -324,12 +324,12 @@
             "name": "zones",
             "required": false,
             "title": {
-              "en": "Zones (e.g. 1,2)",
-              "fr": "Zones (ex : 1,2)"
+              "en": "Zones",
+              "fr": "Zones"
             },
             "placeholder": {
-              "en": "all zones if empty",
-              "fr": "toutes si vide"
+              "en": "e.g. 1,2 — all if empty",
+              "fr": "ex : 1,2 — toutes si vide"
             }
           }
         ]
