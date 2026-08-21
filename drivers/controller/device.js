@@ -282,6 +282,24 @@ class NetroControllerDevice extends Homey.Device {
     return res;
   }
 
+  // Force a moisture level on zones, then refresh quickly.
+  // Force un niveau d'humidité sur des zones, puis rafraîchit vite.
+  async setMoistureZones({ moisture, zones }) {
+    this.log(`setMoisture ${moisture}% zones=${JSON.stringify(zones) || 'all'}`);
+    const res = await this.api.setMoisture({ moisture, zones });
+    this._repollBurst();
+    return res;
+  }
+
+  // Skip watering for N days, then refresh quickly.
+  // Ne pas arroser pendant N jours, puis rafraîchit vite.
+  async noWaterDays(days) {
+    this.log(`noWater ${days} day(s)`);
+    const res = await this.api.noWater(days);
+    this._repollBurst();
+    return res;
+  }
+
   // After a manual start/stop, Netro's cloud takes a moment to reflect the new
   // state. Fire a few quick polls so tiles and widgets catch up in seconds
   // instead of waiting for the next scheduled poll.

@@ -1,22 +1,25 @@
-<!-- Vue de pairing : saisie de la clé API Netro -->
+<!-- Pairing view: Netro API key entry (localised EN/FR) -->
 <div class="homey-form-group">
-  <label class="homey-form-label" for="apikey">Clé API Netro</label>
-  <input id="apikey" class="homey-form-input" type="text"
-         placeholder="clé de 32 caractères" autocomplete="off" />
-  <p class="homey-text-small" style="margin-top:8px;color:#888">
-    Compte Netro &rarr; Account &rarr; API Key &rarr; Generate API Key.
-  </p>
+  <label class="homey-form-label" for="apikey" id="lbl"></label>
+  <input id="apikey" class="homey-form-input" type="text" autocomplete="off" />
+  <p class="homey-text-small" id="hint" style="margin-top:8px;color:#888"></p>
   <p id="error" style="color:#c0392b;display:none;margin-top:8px"></p>
   <p id="ok" style="color:#27ae60;display:none;margin-top:8px"></p>
 </div>
 
-<button id="next" class="homey-button-primary-full" disabled>Vérifier</button>
+<button id="next" class="homey-button-primary-full" disabled></button>
 
 <script type="application/javascript">
   const input = document.getElementById('apikey');
   const btn = document.getElementById('next');
   const errEl = document.getElementById('error');
   const okEl = document.getElementById('ok');
+
+  document.getElementById('lbl').textContent = Homey.__('pair.apiKey');
+  input.placeholder = Homey.__('pair.placeholder');
+  document.getElementById('hint').textContent = Homey.__('pair.hint');
+  btn.textContent = Homey.__('pair.verify');
+  Homey.setTitle(Homey.__('pair.title'));
 
   input.addEventListener('input', () => {
     btn.disabled = input.value.trim().length < 10;
@@ -29,16 +32,13 @@
     errEl.style.display = 'none';
     try {
       const info = await Homey.emit('validate_key', input.value);
-      okEl.textContent = 'Appareil trouvé : ' + info.name + ' (' + info.zones + ' zones)';
+      okEl.textContent = Homey.__('pair.found') + info.name + ' (' + info.zones + ' ' + Homey.__('pair.zones') + ')';
       okEl.style.display = 'block';
-      // clé valide -> on passe à la sélection/ajout
       Homey.showView('list_devices');
     } catch (e) {
-      errEl.textContent = 'Clé invalide ou appareil injoignable.';
+      errEl.textContent = Homey.__('pair.invalid');
       errEl.style.display = 'block';
       btn.disabled = false;
     }
   });
-
-  Homey.setTitle('Connexion à Netro');
 </script>

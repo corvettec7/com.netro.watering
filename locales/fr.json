@@ -1,0 +1,18 @@
+{
+  "pair": {
+    "title": "Connexion \u00e0 Netro",
+    "sensorTitle": "Connexion au capteur Netro",
+    "apiKey": "Cl\u00e9 API Netro",
+    "sensorApiKey": "Cl\u00e9 API du capteur",
+    "placeholder": "cl\u00e9 de 32 caract\u00e8res",
+    "sensorPlaceholder": "cl\u00e9 du capteur (32 caract\u00e8res)",
+    "hint": "Compte Netro \u2192 Account \u2192 API Key \u2192 Generate API Key.",
+    "sensorHint": "Compte Netro \u2192 Account \u2192 API Key \u2192 s\u00e9lectionnez votre capteur \u2192 Generate API Key.",
+    "verify": "V\u00e9rifier",
+    "found": "Appareil trouv\u00e9 : ",
+    "foundSensor": "Capteur trouv\u00e9 : ",
+    "zones": "zones",
+    "invalid": "Cl\u00e9 invalide ou appareil injoignable.",
+    "sensorInvalid": "Cl\u00e9 invalide ou capteur injoignable."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "pair": {
+    "title": "Connect to Netro",
+    "sensorTitle": "Connect to Netro sensor",
+    "apiKey": "Netro API key",
+    "sensorApiKey": "Sensor API key",
+    "placeholder": "32-character key",
+    "sensorPlaceholder": "Sensor key (32 characters)",
+    "hint": "Netro account \u2192 Account \u2192 API Key \u2192 Generate API Key.",
+    "sensorHint": "Netro account \u2192 Account \u2192 API Key \u2192 select your sensor \u2192 Generate API Key.",
+    "verify": "Verify",
+    "found": "Device found: ",
+    "foundSensor": "Sensor found: ",
+    "zones": "zones",
+    "invalid": "Invalid key or device unreachable.",
+    "sensorInvalid": "Invalid key or sensor unreachable."
+  }
+}

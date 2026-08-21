@@ -58,12 +58,6 @@ class NetroSensorDevice extends Homey.Device {
       }
       await this._safeSet('measure_battery', latest.battery_level);
 
-      // Low-battery alarm / alarme batterie faible — the sensor may be far away.
-      if (typeof latest.battery_level === 'number') {
-        const threshold = Number(this.getSetting('battery_threshold')) || 15;
-        await this._safeSet('alarm_battery', latest.battery_level < threshold);
-      }
-
       if (!this.getAvailable()) await this.setAvailable();
 
       if (meta && typeof meta.token_remaining === 'number' && meta.token_remaining < 50) {

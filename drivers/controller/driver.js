@@ -26,11 +26,11 @@ class NetroControllerDriver extends Homey.Driver {
 
     // Carte ALORS : arrêter l'arrosage
     this.homey.flow.getActionCard('stop_watering')
-      .registerRunListener(async (args) => args.device.api.stopWater());
+      .registerRunListener(async (args) => args.device.stopWatering());
 
     // Carte ALORS : ne pas arroser pendant N jours
     this.homey.flow.getActionCard('no_water')
-      .registerRunListener(async (args) => args.device.api.noWater(args.days));
+      .registerRunListener(async (args) => args.device.noWaterDays(args.days));
 
     // Carte ALORS : forcer l'humidité d'une zone
     this.homey.flow.getActionCard('set_moisture')
@@ -38,7 +38,7 @@ class NetroControllerDriver extends Homey.Driver {
         const zones = (args.zones && args.zones.trim())
           ? args.zones.split(',').map((z) => parseInt(z.trim(), 10)).filter((n) => !Number.isNaN(n))
           : undefined;
-        return args.device.api.setMoisture({ moisture: args.moisture, zones });
+        return args.device.setMoistureZones({ moisture: args.moisture, zones });
       });
 
     // Carte ET : le contrôleur est-il en ligne ?

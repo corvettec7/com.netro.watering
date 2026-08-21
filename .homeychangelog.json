@@ -47,5 +47,9 @@
   "1.0.1": {
     "en": "Polish for public release: a new lifestyle app image, real product images for each device, clearer Flow card titles, and separate English/French store descriptions.",
     "fr": "Finitions pour la sortie publique : nouvelle image d'app lifestyle, vraies images produit pour chaque appareil, titres de cartes de Flow plus clairs, et descriptions store séparées anglais/français."
+  },
+  "1.0.2": {
+    "en": "Certification fixes: the sensor now uses a single battery capability, each driver has its own icon, the pairing screens are available in English (and French), and the stop/moisture/no-water Flow actions now refresh tiles and widgets immediately.",
+    "fr": "Corrections de certification : le capteur utilise une seule capacité de batterie, chaque driver a sa propre icône, les écrans d'association sont disponibles en anglais (et français), et les actions de Flow arrêt/humidité/ne-pas-arroser rafraîchissent aussitôt tuiles et widgets."
   }
 }
